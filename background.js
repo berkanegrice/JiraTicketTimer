@@ -1,1 +1,1 @@
-/* File is left blank intentioanally */
+/* Initialy left blank. */
