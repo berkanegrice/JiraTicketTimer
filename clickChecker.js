@@ -1,17 +1,24 @@
 // Common part
-var webSiteURL = document.URL.toString();
 var date = new Date();
-var isStarted = false;
 
 // For jira only
-var jiraPrefix = "jira.broadangle.com";
-var webPrefix = "https://jira.broadangle.com/projects/"
 var jiraRegex = /[a-zA-Z]+-[0-9]+/;
 
-document.addEventListener('DOMNodeInserted', domChangedCallback);
 
-function isOnJIRA(openedWebSite) {
-    return openedWebSite.includes(jiraPrefix);
+window.addEventListener('load', ready);
+window.addEventListener('DOMNodeInserted', ready);
+
+function ready() {
+    if(document.getElementById("action_id_4") != null) {
+        document.getElementById("action_id_4").onmouseover = function() {
+            startTimerWithID(getTicketID(document.URL))
+        };
+    }
+    if(document.getElementById("edit-issue-submit") != null) { //change with action_id_301 on release version.
+        document.getElementById("edit-issue-submit").onmouseover = function() { //....
+            stopTimerWithID(getTicketID(document.URL))
+        };
+    }
 }
 
 function getTicketID(openedWebSite) {
@@ -20,33 +27,21 @@ function getTicketID(openedWebSite) {
 }
 
 function startTimerWithID(ticketID) {
-    var timeNow = date.getTime();
-    alert('Timer is started: ' + ticketID + ' time: ' + timeNow);
-    setCookie(ticketID, timeNow, { secure: true, 'max-age': 3600 });
+    var timeNow = new Date().getTime();
+    // ONLY FOR DEBUG: Start Progress is already started.
+    if (getCookie(ticketID) != '') {
+        alert('This ticket progress already started.');
+    } else {
+        setCookie(ticketID, timeNow, { secure: true, 'max-age': 3600 });
+        alert('Timer is started: ' + ticketID + ' time: ' + timeNow);
+    }
 }
 
 function stopTimerWithID(ticketID) {
     var start = parseInt(getCookie(ticketID), 10);  
-    var dateNow = new Date();
-    var elapsedTime = msToTime(dateNow.getTime() - start);
-    alert('start : ' + typeof(start) + ' Passed Time: ' + elapsedTime.toString());  
-}
-
-function domChangedCallback() {
-    var URL = document.URL; 
-    if (isOnJIRA(URL)) {        
-        var ticketID = getTicketID(URL);
-        if(document.getElementById("action_id_4") != null && !isStarted) {
-            var startProgressButton = document.getElementById("action_id_4");
-            startProgressButton = startProgressButton.addEventListener("click", () =>
-                startTimerWithID(ticketID), false); isStarted = true;
-        }
-        if(document.getElementById("action_id_301") != null && isStarted) {
-            var closeProgressButton = document.getElementById("action_id_301");    
-            closeProgressButton.addEventListener("click", () =>
-                stopTimerWithID(ticketID), false);  isStarted = false;
-        }
-    }
+    var raw = new Date().getTime() - start;
+    var elapsedTime = msToTime(raw);
+    alert('start : ' + start + ' Passed Time: ' + elapsedTime + ' As a ms: ' + raw);  
 }
 
 function setCookie(name, value, options = {}) {
@@ -92,3 +87,19 @@ function msToTime (ms) {
     minutes = minutes%60;
     return hours;
 }
+
+// /* Start Progress Button */
+// if (!startProgressButton) {
+//     startProgressButton = startProgressButton.addEventListener("click", () =>
+//         startTimerWithID(ticketID), false);
+// }
+
+// /* Stop Progress Button */
+// if(!closeProgressButton) {
+//     closeProgressButton = closeProgressButton.addEventListener("click", () =>
+//         stopTimerWithID(ticketID), false);
+// }
+
+// var ticketID = getTicketID(URL);
+// var URL = document.URL; 
+// isOnJIRA(URL)
