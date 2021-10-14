@@ -1,6 +1,3 @@
-// Common part
-var date = new Date();
-
 // For jira only
 var jiraRegex = /[a-zA-Z]+-[0-9]+/;
 
@@ -87,19 +84,3 @@ function msToTime (ms) {
     minutes = minutes%60;
     return hours;
 }
-
-// /* Start Progress Button */
-// if (!startProgressButton) {
-//     startProgressButton = startProgressButton.addEventListener("click", () =>
-//         startTimerWithID(ticketID), false);
-// }
-
-// /* Stop Progress Button */
-// if(!closeProgressButton) {
-//     closeProgressButton = closeProgressButton.addEventListener("click", () =>
-//         stopTimerWithID(ticketID), false);
-// }
-
-// var ticketID = getTicketID(URL);
-// var URL = document.URL; 
-// isOnJIRA(URL)
