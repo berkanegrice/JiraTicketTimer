@@ -29,7 +29,7 @@ function startTimerWithID(ticketID) {
     if (getCookie(ticketID) != '') {
         alert('This ticket progress already started.');
     } else {
-        setCookie(ticketID, timeNow, { secure: true, 'max-age': 3600 });
+        setCookie(ticketID, timeNow, { secure: true, 'max-age': 43200000 });
         alert('Timer is started: ' + ticketID + ' time: ' + timeNow);
     }
 }
