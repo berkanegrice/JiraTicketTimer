@@ -1,2 +1,2 @@
 # Jira Ticket Timer
-It's a tool to trace the time when a ticket state on progress.
+It's a tool to track the time when a ticket state on progress.

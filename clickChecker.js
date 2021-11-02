@@ -89,3 +89,4 @@ function msToTime (ms) {
     minutes = minutes%60;
     return hours;
 }
+
