@@ -1,13 +1,15 @@
+// Common part
+var date = new Date();
 // For jira only
 var jiraRegex = /[a-zA-Z]+-[0-9]+/;
-
+var totalHourDaily = 6.5;
 
 window.addEventListener('load', ready);
 window.addEventListener('DOMNodeInserted', ready);
 
 function ready() {
     if(document.getElementById("action_id_4") != null) {
-        document.getElementById("action_id_4").onmouseover = function() {
+        document.getElementById("action_id_4").onmouseover = function() { // will be replaced onclick method on release version.
             startTimerWithID(getTicketID(document.URL))
         };
     }
@@ -29,7 +31,8 @@ function startTimerWithID(ticketID) {
     if (getCookie(ticketID) != '') {
         alert('This ticket progress already started.');
     } else {
-        setCookie(ticketID, timeNow, { secure: true, 'max-age': 43200000 });
+        setCookie(ticketID, timeNow, { secure: true, 'max-age': 2629800000 }); // exactly one month, therefore think of scrum lengths.
+        setCookie('TotalHour', totalHourDaily, { secure: true, 'max-age': 2629800000 }); // set total working hour.
         alert('Timer is started: ' + ticketID + ' time: ' + timeNow);
     }
 }
@@ -38,7 +41,9 @@ function stopTimerWithID(ticketID) {
     var start = parseInt(getCookie(ticketID), 10);  
     var raw = new Date().getTime() - start;
     var elapsedTime = msToTime(raw);
-    alert('start : ' + start + ' Passed Time: ' + elapsedTime + ' As a ms: ' + raw);  
+    var leftTime = parseFloat(parseInt(getCookie(TotalHour), 10) - elapsedTime).toFixed(2);
+    setCookie('TotalHour', leftTime, { secure: true, 'max-age': 2629800000 }); // update total working hour.
+    alert('start : ' + start + ' Passed Time: ' + elapsedTime + ' Left Time: ' + leftTime);
 }
 
 function setCookie(name, value, options = {}) {
@@ -64,14 +69,14 @@ function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
 }
@@ -84,3 +89,4 @@ function msToTime (ms) {
     minutes = minutes%60;
     return hours;
 }
+
