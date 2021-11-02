@@ -9,12 +9,12 @@ window.addEventListener('DOMNodeInserted', ready);
 
 function ready() {
     if(document.getElementById("action_id_4") != null) {
-        document.getElementById("action_id_4").onmouseover = function() { // will be replaced onclick method on release version.
+        document.getElementById("action_id_4").onclick = function() { // will be replaced onclick method on release version.
             startTimerWithID(getTicketID(document.URL))
         };
     }
-    if(document.getElementById("edit-issue-submit") != null) { //change with action_id_301 on release version.
-        document.getElementById("edit-issue-submit").onmouseover = function() { //....
+    if(document.getElementById("action_id_301") != null) { //change with [action_id_301, edit-issue-submit] on release version.
+        document.getElementById("action_id_301").onclick = function() { //....
             stopTimerWithID(getTicketID(document.URL))
         };
     }
@@ -26,8 +26,7 @@ function getTicketID(openedWebSite) {
 }
 
 function startTimerWithID(ticketID) {
-    var timeNow = new Date().getTime();
-    // ONLY FOR DEBUG: Start Progress is already started.
+    var timeNow = new Date().getTime();    
     if (getCookie(ticketID) != '') {
         alert('This ticket progress already started.');
     } else {
@@ -89,4 +88,3 @@ function msToTime (ms) {
     minutes = minutes%60;
     return hours;
 }
-
