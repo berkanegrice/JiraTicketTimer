@@ -2,7 +2,7 @@
 var date = new Date();
 // For jira only
 var jiraRegex = /[a-zA-Z]+-[0-9]+/;
-var totalHourDaily = 6.5;
+var totalHourDaily = 6;
 
 window.addEventListener('load', ready);
 window.addEventListener('DOMNodeInserted', ready);
@@ -32,7 +32,7 @@ function startTimerWithID(ticketID) {
     } else {
         setCookie(ticketID, timeNow, { secure: true, 'max-age': 2629800000 }); // exactly one month, therefore think of scrum lengths.
         setCookie('TotalHour', totalHourDaily, { secure: true, 'max-age': 2629800000 }); // set total working hour.
-        alert('Timer is started: ' + ticketID + ' time: ' + timeNow);
+        alert('Timer is started: ' + ticketID + " Current Local time: " + new Date().toLocaleTimeString());
     }
 }
 
@@ -40,7 +40,7 @@ function stopTimerWithID(ticketID) {
     var start = parseInt(getCookie(ticketID), 10);  
     var raw = new Date().getTime() - start;
     var elapsedTime = msToTime(raw);
-    var leftTime = parseFloat(parseInt(getCookie(TotalHour), 10) - elapsedTime).toFixed(2);
+    var leftTime = parseFloat(parseInt(getCookie('TotalHour'), 10) - elapsedTime).toFixed(2);
     setCookie('TotalHour', leftTime, { secure: true, 'max-age': 2629800000 }); // update total working hour.
     alert('start : ' + start + ' Passed Time: ' + elapsedTime + ' Left Time: ' + leftTime);
 }
